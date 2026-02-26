@@ -81,7 +81,7 @@ app.get("/", (c) => {
 //    Railway uses this to know if your agent is alive.
 app.get("/api/health", (c) => {
   return c.json({
-    status: "ok",
+    status: "healthy",
     agent: registration.name,
     version: VERSION,
     timestamp: new Date().toISOString(),
@@ -99,6 +99,13 @@ app.get("/registration.json", (c) => {
 // 4. A2A AGENT CARD — Agent-to-Agent discovery
 //    Other agents use this endpoint to understand what your agent can do.
 app.get("/.well-known/agent-card.json", (c) => {
+  return c.json(registration, 200, {
+    "Content-Type": "application/json",
+  });
+});
+
+// 4b. A2A DISCOVERY — Scanners probe this path for agent detection (IA024)
+app.get("/.well-known/agent.json", (c) => {
   return c.json(registration, 200, {
     "Content-Type": "application/json",
   });
@@ -303,6 +310,52 @@ app.post("/mcp", async (c) => {
 });
 
 // ============================================================
+// A2A ENDPOINT (Agent-to-Agent via JSON-RPC)
+//
+// Supports tasks/send for inter-agent communication.
+// Other agents call this to send tasks and receive results.
+// ============================================================
+
+app.post("/a2a", async (c) => {
+  try {
+    const body = await c.req.json();
+    const { method, id, params } = body;
+
+    if (method === "tasks/send") {
+      const taskId = params?.id || `task-${Date.now()}`;
+      const message = params?.message || {};
+      const parts = message.parts || [];
+      const textPart = parts.find((p: { type: string }) => p.type === "text");
+      const userText = textPart?.text || "";
+
+      // Replace with your own logic (LLM call, knowledge base, etc.)
+      return c.json({
+        jsonrpc: "2.0",
+        id,
+        result: {
+          id: taskId,
+          status: { state: "completed" },
+          artifacts: [{
+            parts: [{ type: "text", text: `This is a starter template. Implement your answer logic for: ${userText}` }]
+          }]
+        }
+      });
+    }
+
+    return c.json({
+      jsonrpc: "2.0",
+      id,
+      error: { code: -32601, message: `Method not supported: ${method}` }
+    });
+  } catch {
+    return c.json(
+      { jsonrpc: "2.0", id: null, error: { code: -32603, message: "Internal error" } },
+      500
+    );
+  }
+});
+
+// ============================================================
 // ADD YOUR OWN ENDPOINTS HERE
 //
 // Examples:
@@ -328,6 +381,8 @@ serve({ fetch: app.fetch, port }, (info) => {
   console.log(`  GET  /api/health              Health check`);
   console.log(`  GET  /registration.json       ERC-8004 metadata`);
   console.log(`  GET  /.well-known/agent-card  A2A agent card`);
+  console.log(`  GET  /.well-known/agent.json  A2A discovery`);
   console.log(`  POST /mcp                     MCP server (${MCP_TOOLS.length} tools)`);
+  console.log(`  POST /a2a                     A2A tasks/send`);
   console.log("");
 });

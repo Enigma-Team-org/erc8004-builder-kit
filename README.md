@@ -116,6 +116,7 @@ Both templates are ready for Railway deployment with Dockerfile and `railway.tom
 | [check-agent.sh](scripts/check-agent.sh) | Query agent info from any chain |
 | [update-uri.sh](scripts/update-uri.sh) | Update metadata URI on-chain |
 | [give-feedback.sh](scripts/give-feedback.sh) | Submit reputation feedback |
+| [validate-8004.sh](scripts/validate-8004.sh) | Full 8004scan metadata validator (WA/IA checks, MCP/A2A probes) |
 
 All scripts support multi-chain via `CHAIN=` environment variable.
 

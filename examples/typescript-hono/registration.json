@@ -10,7 +10,7 @@
     },
     {
       "name": "A2A",
-      "endpoint": "https://YOUR-DOMAIN/.well-known/agent-card.json",
+      "endpoint": "https://YOUR-DOMAIN/a2a",
       "version": "0.3.0"
     },
     {
@@ -25,26 +25,14 @@
   ],
   "x402Support": false,
   "active": true,
-
-  "_comment_registrations": "MULTI-CHAIN: Add one entry per chain where your agent is registered. Use CAIP-10 format: eip155:<chainId>:<registryAddress>. Same contract address works on all 19 mainnets. See references/contract-addresses.md for the full list.",
-
   "registrations": [
     {
-      "agentId": 0,
-      "agentRegistry": "eip155:YOUR_CHAIN_ID:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
-      "_examples": {
-        "Base (8453)":      "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
-        "Ethereum (1)":     "eip155:1:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
-        "Arbitrum (42161)":  "eip155:42161:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
-        "Avalanche (43114)": "eip155:43114:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
-        "Optimism (10)":    "eip155:10:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
-        "Polygon (137)":    "eip155:137:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
-      }
+      "agentId": "REPLACE_WITH_YOUR_AGENT_ID_AFTER_REGISTRATION",
+      "agentRegistry": "eip155:84532:0x8004A818BFB912233c491871b3d84c89A494BD9e"
     }
   ],
   "supportedTrust": ["reputation"],
   "capabilities": [
     "your-capability-1"
-  ],
-  "pricePerMessage": "Free"
+  ]
 }

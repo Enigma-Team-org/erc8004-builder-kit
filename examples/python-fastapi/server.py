@@ -54,7 +54,7 @@ async def dashboard():
 async def health():
     """Health check for Railway and monitoring."""
     return {
-        "status": "ok",
+        "status": "healthy",
         "agent": REGISTRATION["name"],
         "version": VERSION,
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -70,6 +70,12 @@ async def registration():
 @app.get("/.well-known/agent-card.json")
 async def agent_card():
     """A2A agent card — same as registration for discovery."""
+    return JSONResponse(REGISTRATION)
+
+
+@app.get("/.well-known/agent.json")
+async def agent_json():
+    """A2A discovery endpoint — scanners probe this path for agent detection."""
     return JSONResponse(REGISTRATION)
 
 
@@ -195,28 +201,51 @@ async def mcp_handler(request: Request):
 
 
 # ============================================================
-# A2A ENDPOINT
+# A2A ENDPOINT (Agent-to-Agent via JSON-RPC)
 # ============================================================
 
-@app.post("/a2a/ask")
-async def a2a_ask(request: Request):
-    """A2A natural language endpoint."""
-    body = await request.json()
-    question = body.get("question") or body.get("message") or body.get("input")
-
-    if not question or not isinstance(question, str):
+@app.post("/a2a")
+async def a2a_handler(request: Request):
+    """A2A JSON-RPC endpoint — supports tasks/send for inter-agent communication."""
+    try:
+        body = await request.json()
+    except Exception:
         return JSONResponse(
-            {"error": "Missing 'question' field", "usage": {"method": "POST", "body": {"question": "Your question here"}}},
-            status_code=400,
+            {"jsonrpc": "2.0", "id": None, "error": {"code": -32700, "message": "Parse error"}}
         )
 
-    # Replace with your own logic (LLM call, knowledge base, etc.)
-    return {
-        "agent": REGISTRATION["name"],
-        "question": question,
-        "answer": f"This is a starter template. Implement your answer logic for: {question}",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-    }
+    method = body.get("method")
+    req_id = body.get("id")
+    params = body.get("params", {})
+
+    if method == "tasks/send":
+        task_id = params.get("id", f"task-{int(time.time())}")
+        message = params.get("message", {})
+        parts = message.get("parts", [])
+        user_text = ""
+        for part in parts:
+            if isinstance(part, dict) and part.get("type") == "text":
+                user_text = part.get("text", "")
+                break
+
+        # Replace with your own logic (LLM call, knowledge base, etc.)
+        return JSONResponse({
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "result": {
+                "id": task_id,
+                "status": {"state": "completed"},
+                "artifacts": [{
+                    "parts": [{"type": "text", "text": f"This is a starter template. Implement your answer logic for: {user_text}"}]
+                }]
+            }
+        })
+
+    return JSONResponse({
+        "jsonrpc": "2.0",
+        "id": req_id,
+        "error": {"code": -32601, "message": f"Method not supported: {method}"}
+    })
 
 
 # ============================================================
@@ -234,8 +263,9 @@ if __name__ == "__main__":
     print("  GET  /api/health              Health check")
     print("  GET  /registration.json       ERC-8004 metadata")
     print("  GET  /.well-known/agent-card  A2A agent card")
+    print("  GET  /.well-known/agent.json  A2A discovery")
     print(f"  POST /mcp                     MCP server ({len(MCP_TOOLS)} tools)")
-    print("  POST /a2a/ask                 A2A endpoint")
+    print("  POST /a2a                     A2A tasks/send")
     print("  GET  /oasf                    OASF discovery")
     print()
 

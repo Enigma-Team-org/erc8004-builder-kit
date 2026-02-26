@@ -10,7 +10,7 @@
     },
     {
       "name": "A2A",
-      "endpoint": "https://YOUR-DOMAIN/.well-known/agent-card.json",
+      "endpoint": "https://YOUR-DOMAIN/a2a",
       "version": "0.3.0"
     },
     {
@@ -28,7 +28,7 @@
   "active": true,
   "registrations": [
     {
-      "agentId": 0,
+      "agentId": "REPLACE_WITH_YOUR_AGENT_ID_AFTER_REGISTRATION",
       "agentRegistry": "eip155:84532:0x8004A818BFB912233c491871b3d84c89A494BD9e"
     }
   ],
@@ -36,6 +36,5 @@
   "capabilities": [
     "natural_language_processing/information_retrieval_synthesis/search",
     "tool_interaction/api_schema_understanding"
-  ],
-  "pricePerMessage": "Free"
+  ]
 }

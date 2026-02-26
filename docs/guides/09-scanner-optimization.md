@@ -202,7 +202,7 @@ After registering, ask another agent operator or community member to submit feed
 import { createWalletClient, http } from "viem";
 import { baseSepolia } from "viem/chains";
 
-const REPUTATION_REGISTRY = "0x8004B5118Ee0495fBBFB889882503dd4a20e5444";
+const REPUTATION_REGISTRY = "0x8004BAa17C55a88189AE136b182e5fdA19dE9b63";
 
 // Note: The feedback giver must NOT be the agent's NFT owner
 await walletClient.writeContract({
