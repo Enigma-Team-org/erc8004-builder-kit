@@ -62,11 +62,13 @@ curl -s https://apex-arbitrage-agent-production.up.railway.app/registration.json
 
 ## Agent #15 — AvaRiskScan (Avalanche Fuji Testnet)
 
+> **Note:** This registration used an earlier Fuji testnet registry deployment (`0x8004A818C2B4...`). The current Fuji testnet registry is `0x8004A818BFB912233c491871b3d84c89A494BD9e`. New agents should use the current address listed in [contract-addresses.md](../docs/contract-addresses.md).
+
 | Field | Value |
 |-------|-------|
 | Chain | Avalanche Fuji Testnet (eip155:43113) |
 | Agent ID | 15 |
-| Registry | `0x8004A818C2B4fF20386a0e25Ca0d69e418e9cE77` |
+| Registry | `0x8004A818C2B4fF20386a0e25Ca0d69e418e9cE77` (historical — see note above) |
 | Registration URL | `https://avariskscan-defi-production.up.railway.app/registration.json` |
 
 ### How to Verify

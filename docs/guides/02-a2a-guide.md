@@ -695,7 +695,7 @@ After interacting with an agent via A2A, submit on-chain reputation feedback:
 import { createWalletClient, http } from "viem";
 import { baseSepolia } from "viem/chains";
 
-const REPUTATION_REGISTRY = "0x8004B5118Ee0495fBBFB889882503dd4a20e5444";
+const REPUTATION_REGISTRY = "0x8004BAa17C55a88189AE136b182e5fdA19dE9b63";
 
 async function submitFeedback(agentId: number, rating: number) {
   const walletClient = createWalletClient({

@@ -6,7 +6,7 @@
 |-------|-------|
 | Agent ID | #1686 (Avalanche Mainnet), #15 (Avalanche Fuji Testnet) |
 | Registry (Mainnet) | `eip155:43114:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
-| Registry (Fuji) | `eip155:43113:0x8004A818C2B4fF20386a0e25Ca0d69e418e9cE77` |
+| Registry (Fuji) | `eip155:43113:0x8004A818C2B4fF20386a0e25Ca0d69e418e9cE77` (historical deployment — current Fuji registry: `0x8004A818BFB912233c491871b3d84c89A494BD9e`) |
 | Wallet | `0x29a45b03F07D1207f2e3ca34c38e7BE5458CE71a` |
 | Stack | TypeScript / Hono |
 | Deployment | Railway |

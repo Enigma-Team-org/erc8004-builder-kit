@@ -625,7 +625,7 @@ All ERC-8004 registries use the same contract addresses across chains:
 | Registry | Address |
 |----------|---------|
 | Identity | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
-| Reputation | `0x8004B5118Ee0495fBBFB889882503dd4a20e5444` |
+| Reputation | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` |
 | Validation | `0x8004C11CeD79AE1A66e121600E41DA4BEdf60888` |
 
 ## Troubleshooting Deployment

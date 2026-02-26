@@ -176,7 +176,7 @@ function getVersion() external pure returns (string memory)
 
 ## Reputation Registry (IReputationRegistry)
 
-**Address**: `0x8004B5118Ee0495fBBFB889882503dd4a20e5444`
+**Address**: `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63`
 
 ### giveFeedback
 
