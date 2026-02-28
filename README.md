@@ -59,6 +59,70 @@ CHAIN=base-sepolia ./scripts/verify-agent.sh YOUR_AGENT_ID
 
 ---
 
+## What You'll See
+
+After `npm run dev` (or `python server.py`), your agent runs on `http://localhost:3000`:
+
+```
+$ npm run dev
+Server running on http://localhost:3000
+
+$ curl http://localhost:3000/heartbeat
+{"status":"alive","timestamp":"2026-02-28T12:00:00Z"}
+
+$ curl http://localhost:3000/registration.json | jq '.services[].name'
+"web"
+"A2A"
+"MCP"
+"OASF"
+"heartbeat"
+
+$ curl -X POST http://localhost:3000/mcp -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
+{"jsonrpc":"2.0","id":1,"result":{"tools":[{"name":"get_agent_info",...}]}}
+```
+
+### Pre-Deploy Checklist
+
+Before going live, validate your setup:
+
+```bash
+# 1. Check registration.json for placeholder mistakes
+./scripts/validate-registration.sh registration.json
+
+# 2. Test all endpoints locally
+./scripts/test-local.sh http://localhost:3000
+
+# 3. Deploy to Railway/Docker
+
+# 4. Register on-chain
+CHAIN=base-sepolia PRIVATE_KEY=$KEY ./scripts/register.sh "https://your-domain/registration.json"
+
+# 5. Verify registration
+CHAIN=base-sepolia ./scripts/verify-agent.sh YOUR_AGENT_ID
+```
+
+### I Want To...
+
+| Goal | Guide |
+|------|-------|
+| Get my first agent running | [01-quickstart.md](docs/guides/01-quickstart.md) |
+| Add agent-to-agent communication | [02-a2a-guide.md](docs/guides/02-a2a-guide.md) |
+| Expose tools via MCP | [03-mcp-guide.md](docs/guides/03-mcp-guide.md) |
+| Accept micropayments | [04-x402-guide.md](docs/guides/04-x402-guide.md) |
+| Maximize my scanner score | [13-8004scan-optimization.md](docs/guides/13-8004scan-optimization.md) |
+| Deploy to production | [06-deployment-guide.md](docs/guides/06-deployment-guide.md) |
+
+### Use with AI (Claude, ChatGPT, etc.)
+
+Copy [docs/guides/00-llm-prompt.md](docs/guides/00-llm-prompt.md) and paste it into your LLM. Then say:
+
+> "Help me build an ERC-8004 agent that [describe what it does]"
+
+The prompt contains all the rules, schemas, and common mistakes so the LLM can generate a working agent scaffold.
+
+---
+
 ## What's Inside
 
 ### Documentation (`docs/`)
@@ -111,12 +175,14 @@ Both templates are ready for Railway deployment with Dockerfile and `railway.tom
 
 | Script | Description |
 |--------|-------------|
-| [register.sh](scripts/register.sh) | Register agent on any of 9+ chains (mainnet + testnet) |
+| [register.sh](scripts/register.sh) | Register agent on any of 9+ chains (auto-extracts agentId) |
 | [verify-agent.sh](scripts/verify-agent.sh) | 30+ verification checks (on-chain, metadata, endpoints) |
 | [check-agent.sh](scripts/check-agent.sh) | Query agent info from any chain |
 | [update-uri.sh](scripts/update-uri.sh) | Update metadata URI on-chain |
 | [give-feedback.sh](scripts/give-feedback.sh) | Submit reputation feedback |
 | [validate-8004.sh](scripts/validate-8004.sh) | Full 8004scan metadata validator (WA/IA checks, MCP/A2A probes) |
+| [validate-registration.sh](scripts/validate-registration.sh) | Pre-deploy check for registration.json (placeholders, OASF, A2A) |
+| [test-local.sh](scripts/test-local.sh) | Test all endpoints locally before deploying |
 
 All scripts support multi-chain via `CHAIN=` environment variable.
 

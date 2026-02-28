@@ -143,12 +143,49 @@ sleep 5
 RECEIPT=$(cast receipt "$TX_HASH" --rpc-url "$RPC_URL" --json 2>/dev/null || echo "")
 
 if [ -n "$RECEIPT" ]; then
+  # Extract agentId from Transfer event (topic[3] = tokenId = agentId)
+  AGENT_ID=""
+  if command -v python3 &> /dev/null; then
+    AGENT_ID=$(echo "$RECEIPT" | python3 -c "
+import sys, json
+r = json.load(sys.stdin)
+for log in r.get('logs', []):
+    topics = log.get('topics', [])
+    if len(topics) >= 4 and topics[0].startswith('0xddf252'):
+        print(int(topics[3], 16))
+        break
+" 2>/dev/null)
+  fi
+
   echo ""
-  echo "Registration successful!"
-  echo "Transaction: $EXPLORER/tx/$TX_HASH"
-  echo "Registry ID: eip155:${CHAIN_ID}:${IDENTITY_REGISTRY}"
+  echo "=== Registration Successful! ==="
   echo ""
-  echo "Next: Update registration.json with your agentId and redeploy."
+  if [ -n "$AGENT_ID" ]; then
+    echo "  Agent ID:  $AGENT_ID"
+    echo "  Registry:  eip155:${CHAIN_ID}:${IDENTITY_REGISTRY}"
+    echo "  Explorer:  $EXPLORER/tx/$TX_HASH"
+    echo ""
+    echo "=== Next Steps ==="
+    echo ""
+    echo "  1. Update registration.json:"
+    echo "     Replace \"REPLACE_WITH_YOUR_AGENT_ID_AFTER_REGISTRATION\" with $AGENT_ID"
+    echo ""
+    echo "  2. Update the agentRegistry to your chain:"
+    echo "     \"agentRegistry\": \"eip155:${CHAIN_ID}:${IDENTITY_REGISTRY}\""
+    echo ""
+    echo "  3. Redeploy your agent"
+    echo ""
+    echo "  4. Verify:"
+    echo "     CHAIN=$CHAIN ./scripts/verify-agent.sh $AGENT_ID"
+  else
+    echo "  Transaction: $EXPLORER/tx/$TX_HASH"
+    echo "  Registry:    eip155:${CHAIN_ID}:${IDENTITY_REGISTRY}"
+    echo ""
+    echo "  Could not auto-detect agentId. Find it on the explorer:"
+    echo "  $EXPLORER/tx/$TX_HASH (look for Transfer event tokenId)"
+    echo ""
+    echo "  Then update registration.json and redeploy."
+  fi
 else
   echo ""
   echo "Transaction submitted. Check status at:"
