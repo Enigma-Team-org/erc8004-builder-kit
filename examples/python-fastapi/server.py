@@ -98,6 +98,16 @@ async def serve_static(filename: str):
 
 
 # ============================================================
+# HEARTBEAT — Simple uptime check for scanners
+# ============================================================
+
+@app.get("/heartbeat")
+async def heartbeat():
+    """Heartbeat endpoint — scanners check this to verify agent is alive."""
+    return {"status": "alive", "timestamp": datetime.now(timezone.utc).isoformat()}
+
+
+# ============================================================
 # OASF ENDPOINT
 # ============================================================
 
@@ -266,6 +276,7 @@ if __name__ == "__main__":
     print("  GET  /.well-known/agent.json  A2A discovery")
     print(f"  POST /mcp                     MCP server ({len(MCP_TOOLS)} tools)")
     print("  POST /a2a                     A2A tasks/send")
+    print("  GET  /heartbeat               Heartbeat")
     print("  GET  /oasf                    OASF discovery")
     print()
 

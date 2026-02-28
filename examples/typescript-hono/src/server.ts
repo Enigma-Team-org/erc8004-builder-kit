@@ -303,8 +303,7 @@ app.post("/mcp", async (c) => {
     return rpcErr(-32601, `Method not supported: ${method}`);
   } catch {
     return c.json(
-      { jsonrpc: "2.0", id: null, error: { code: -32603, message: "Internal error" } },
-      500
+      { jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error" } }
     );
   }
 });
@@ -349,10 +348,40 @@ app.post("/a2a", async (c) => {
     });
   } catch {
     return c.json(
-      { jsonrpc: "2.0", id: null, error: { code: -32603, message: "Internal error" } },
-      500
+      { jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error" } }
     );
   }
+});
+
+// ============================================================
+// HEARTBEAT — Simple uptime check for scanners
+// ============================================================
+
+app.get("/heartbeat", (c) => {
+  return c.json({
+    status: "alive",
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// ============================================================
+// OASF ENDPOINT — Open Agent Skills Framework discovery
+// ============================================================
+
+app.get("/oasf", (c) => {
+  return c.json({
+    name: registration.name,
+    description: registration.description || "",
+    version: VERSION,
+    skills: [
+      "natural_language_processing/information_retrieval_synthesis",
+      "tool_interaction/api_schema_understanding",
+    ],
+    domains: [
+      "technology/software_engineering",
+    ],
+    updatedAt: new Date().toISOString(),
+  });
 });
 
 // ============================================================
@@ -384,5 +413,7 @@ serve({ fetch: app.fetch, port }, (info) => {
   console.log(`  GET  /.well-known/agent.json  A2A discovery`);
   console.log(`  POST /mcp                     MCP server (${MCP_TOOLS.length} tools)`);
   console.log(`  POST /a2a                     A2A tasks/send`);
+  console.log(`  GET  /heartbeat               Heartbeat`);
+  console.log(`  GET  /oasf                    OASF discovery`);
   console.log("");
 });
