@@ -52,9 +52,13 @@ if [ -z "$AGENT_URI" ]; then
   echo "Usage: CHAIN=<chain> ./scripts/register.sh <agent-uri|ipfs>"
   echo ""
   echo "Examples:"
+  echo "  # Direct URL (agent serves its own registration.json)"
   echo "  CHAIN=base ./scripts/register.sh https://myagent.xyz/registration.json"
-  echo "  CHAIN=avalanche-fuji ./scripts/register.sh https://myagent.xyz/registration.json"
-  echo "  CHAIN=base-sepolia PINATA_JWT=xxx ./scripts/register.sh ipfs"
+  echo ""
+  echo "  # IPFS mode (upload metadata to Pinata, then register)"
+  echo "  CHAIN=base-sepolia PINATA_JWT=xxx AGENT_URL=https://myagent.up.railway.app \\"
+  echo "    AGENT_NAME='My Agent' AGENT_DESCRIPTION='What it does' \\"
+  echo "    ./scripts/register.sh ipfs"
   exit 1
 fi
 
@@ -62,55 +66,96 @@ fi
 if [ "$AGENT_URI" = "ipfs" ]; then
   if [ -z "${PINATA_JWT:-}" ]; then
     echo "Error: PINATA_JWT is required for IPFS upload"
+    echo ""
+    echo "Get a free JWT at https://app.pinata.cloud/developers/api-keys"
     exit 1
   fi
 
   AGENT_NAME="${AGENT_NAME:-My ERC-8004 Agent}"
   AGENT_DESCRIPTION="${AGENT_DESCRIPTION:-An AI agent with on-chain identity}"
   AGENT_IMAGE="${AGENT_IMAGE:-}"
+  AGENT_URL="${AGENT_URL:-}"
+
+  if [ -z "$AGENT_URL" ]; then
+    echo "Error: AGENT_URL is required for IPFS mode"
+    echo ""
+    echo "Set AGENT_URL to your deployed agent's base URL:"
+    echo "  AGENT_URL=https://my-agent.up.railway.app PINATA_JWT=xxx ./scripts/register.sh ipfs"
+    echo ""
+    echo "Deploy your agent first (Railway, Docker, etc.), then register with IPFS."
+    exit 1
+  fi
+
+  # Remove trailing slash
+  AGENT_URL="${AGENT_URL%/}"
 
   REGISTRATION_JSON=$(cat <<EOF
 {
   "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
   "name": "$AGENT_NAME",
   "description": "$AGENT_DESCRIPTION",
-  "image": "$AGENT_IMAGE",
-  "services": [],
+  "image": "${AGENT_IMAGE:-${AGENT_URL}/public/agent.png}",
+  "services": [
+    { "name": "web", "endpoint": "${AGENT_URL}/" },
+    { "name": "A2A", "endpoint": "${AGENT_URL}/.well-known/agent-card.json", "version": "0.3.0" },
+    { "name": "MCP", "endpoint": "${AGENT_URL}/mcp", "version": "2025-11-25" },
+    { "name": "OASF", "endpoint": "${AGENT_URL}/oasf", "version": "v0.8.0", "skills": ["tool_interaction/api_schema_understanding", "tool_interaction/workflow_automation"], "domains": ["technology/software_engineering"] },
+    { "name": "heartbeat", "endpoint": "${AGENT_URL}/heartbeat" }
+  ],
   "x402Support": false,
   "active": true,
   "registrations": [
     {
-      "agentId": 0,
+      "agentId": "REPLACE_WITH_YOUR_AGENT_ID_AFTER_REGISTRATION",
       "agentRegistry": "eip155:${CHAIN_ID}:${IDENTITY_REGISTRY}"
     }
   ],
-  "supportedTrust": ["reputation"]
+  "supportedTrust": ["reputation"],
+  "capabilities": [
+    "natural_language_processing/information_retrieval_synthesis",
+    "tool_interaction/api_schema_understanding"
+  ]
 }
 EOF
 )
 
-  echo "Uploading registration file to IPFS via Pinata..."
+  echo "Uploading registration to IPFS via Pinata..."
+  echo ""
 
   TMPFILE=$(mktemp /tmp/agent-registration-XXXXXX.json)
   echo "$REGISTRATION_JSON" > "$TMPFILE"
 
-  RESPONSE=$(curl -s -X POST "https://api.pinata.cloud/pinning/pinFileToIPFS" \
+  HTTP_CODE=$(curl -s -o /tmp/pinata-response.json -w "%{http_code}" \
+    -X POST "https://api.pinata.cloud/pinning/pinFileToIPFS" \
     -H "Authorization: Bearer $PINATA_JWT" \
     -F "file=@$TMPFILE" \
     -F "pinataMetadata={\"name\": \"agent-registration-${CHAIN}-${CHAIN_ID}.json\"}")
 
   rm -f "$TMPFILE"
 
+  if [ "$HTTP_CODE" != "200" ]; then
+    echo "Error: Pinata API returned HTTP $HTTP_CODE"
+    echo "Response: $(cat /tmp/pinata-response.json 2>/dev/null)"
+    echo ""
+    echo "Check your PINATA_JWT is valid: https://app.pinata.cloud/developers/api-keys"
+    rm -f /tmp/pinata-response.json
+    exit 1
+  fi
+
+  RESPONSE=$(cat /tmp/pinata-response.json)
+  rm -f /tmp/pinata-response.json
+
   IPFS_HASH=$(echo "$RESPONSE" | grep -o '"IpfsHash":"[^"]*"' | cut -d'"' -f4)
 
   if [ -z "$IPFS_HASH" ]; then
-    echo "Error: Failed to upload to IPFS"
+    echo "Error: Failed to extract IPFS hash from response"
     echo "Response: $RESPONSE"
     exit 1
   fi
 
   AGENT_URI="ipfs://$IPFS_HASH"
   echo "Uploaded to IPFS: $AGENT_URI"
+  echo "Gateway:  https://gateway.pinata.cloud/ipfs/$IPFS_HASH"
 fi
 
 echo ""
