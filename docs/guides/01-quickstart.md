@@ -389,13 +389,15 @@ The verification script checks:
 - MCP tools/list returns valid tool definitions
 - Image URL is accessible
 
-### Check on 8004scan
+### Check on Scanner
 
-Visit [8004scan.io](https://8004scan.io) and search for your agent ID to see:
+Visit [erc-8004scan.xyz](https://www.erc-8004scan.xyz/scanner) and search for your agent ID to see:
 - Your agent's public profile
 - Service endpoints and their status
 - Scanner score breakdown
 - On-chain registration details
+
+Also visible on [8004scan.io](https://8004scan.io) — both scanners read the same on-chain data.
 
 ### Manual Verification
 

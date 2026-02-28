@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![ERC-8004](https://img.shields.io/badge/ERC--8004-Trustless%20Agent%20Services-blue)](https://eips.ethereum.org/EIPS/eip-8004)
 [![Chains](https://img.shields.io/badge/Chains-19%20mainnets-green)](docs/contract-addresses.md)
-[![Agents](https://img.shields.io/badge/Registered%20Agents-21%2C000%2B-purple)](https://8004scan.io)
+[![Agents](https://img.shields.io/badge/Registered%20Agents-21%2C000%2B-purple)](https://www.erc-8004scan.xyz/scanner)
 
 **The definitive builder kit for ERC-8004 agents.** Guides, starter templates, scripts, and real production examples — everything you need to build, deploy, and register AI agents on any EVM chain.
 
@@ -11,7 +11,7 @@ Built by the [Colombia-Blockchain / Enigma](https://github.com/Colombia-Blockcha
 - **Apex Arbitrage Agent** #1687 — Python/FastAPI, DeFi arbitrage detection
 - **AvaRiskScan Agent** #1686 — TypeScript/Hono, Avalanche ecosystem guide + DeFi analytics
 
-> **Compatible with any ERC-8004 scanner.** This kit includes optimization guides for [8004scan.io](https://8004scan.io) (by AltLayer). To register and verify agents in the Enigma ecosystem, visit [erc-8004scan.xyz](https://erc-8004scan.xyz). Both scanners read from the same on-chain registries — your agent works on both.
+> **Register your agent on [erc-8004scan.xyz](https://www.erc-8004scan.xyz/scanner)** — the Enigma scanner for discovering, verifying, and scoring ERC-8004 agents. Also compatible with [8004scan.io](https://8004scan.io) (by AltLayer). Both scanners read from the same on-chain registries — your agent works on both.
 
 ---
 
@@ -152,7 +152,7 @@ The prompt contains all the rules, schemas, and common mistakes so the LLM can g
 | 10 | [Multi-Chain](docs/guides/10-multi-chain.md) | Register on 9+ chains |
 | 11 | [Validation Registry](docs/guides/11-validation-registry.md) | zkML, TEE, stake-secured |
 | 12 | [Agent Wallet](docs/guides/12-agent-wallet.md) | setAgentWallet with EIP-712 |
-| 13 | [8004scan Optimization](docs/guides/13-8004scan-optimization.md) | Maximize your score on 8004scan.io |
+| 13 | [Scanner Optimization](docs/guides/13-8004scan-optimization.md) | Maximize your score on erc-8004scan.xyz and 8004scan.io |
 
 ### Case Studies (`docs/case-studies/`)
 
@@ -216,7 +216,7 @@ ERC-8004 is the standard for **trustless AI agent services** on EVM chains. Thre
 **Same addresses on all 19 chains.** Deploy once, register anywhere.
 
 ```
-Agent → register(agentURI) → Gets NFT (agentId) → Discoverable on 8004scan.io
+Agent → register(agentURI) → Gets NFT (agentId) → Discoverable on erc-8004scan.xyz
 ```
 
 **Key stats (February 2026):**
@@ -304,9 +304,9 @@ New guide: **[13-8004scan-optimization.md](docs/guides/13-8004scan-optimization.
 | ERC-8004 Official | https://www.8004.org |
 | EIP Specification | https://eips.ethereum.org/EIPS/eip-8004 |
 | Contracts (GitHub) | https://github.com/erc-8004/erc-8004-contracts |
-| Agent Scanner | https://8004scan.io |
+| Enigma Scanner | https://www.erc-8004scan.xyz/scanner |
+| AltLayer Scanner | https://8004scan.io |
 | Best Practices | https://best-practices.8004scan.io |
-| Community Scanner | https://www.erc-8004scan.xyz/scanner |
 | x402 Protocol | https://x402.org |
 | MCP Registry | https://registry.modelcontextprotocol.io |
 | A2A Protocol | https://a2a-protocol.org |

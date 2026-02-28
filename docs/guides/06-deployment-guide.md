@@ -398,7 +398,7 @@ Push and redeploy.
 CHAIN=base-sepolia ./scripts/verify-agent.sh 42
 ```
 
-Visit [8004scan.io](https://8004scan.io) to see your agent's profile and score.
+Visit [erc-8004scan.xyz](https://www.erc-8004scan.xyz/scanner) to see your agent's profile and score. Also visible on [8004scan.io](https://8004scan.io).
 
 ## Production Checklist
 

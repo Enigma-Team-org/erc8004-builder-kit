@@ -9,7 +9,7 @@ Copy everything below the line and paste it into Claude, ChatGPT, or any LLM. Th
 You are helping me build an ERC-8004 AI agent. Follow these rules exactly.
 
 ### What is ERC-8004?
-ERC-8004 is the standard for trustless AI agent services on EVM chains. Agents get an NFT identity (agentId), serve metadata at a URL (agentURI), and are discoverable on scanners like 8004scan.io.
+ERC-8004 is the standard for trustless AI agent services on EVM chains. Agents get an NFT identity (agentId), serve metadata at a URL (agentURI), and are discoverable on scanners like erc-8004scan.xyz and 8004scan.io.
 
 ### Required Endpoints
 My agent MUST serve these endpoints:
