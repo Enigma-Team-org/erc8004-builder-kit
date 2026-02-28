@@ -101,7 +101,7 @@ A service object is missing its `endpoint` (URL) field.
 
 **Fix**: Add the `endpoint` field:
 ```json
-{ "name": "MCP", "endpoint": "https://your-agent.com/mcp", "version": "2025-06-18" }
+{ "name": "MCP", "endpoint": "https://your-agent.com/mcp", "version": "2025-11-25" }
 ```
 
 ### WA009: Empty endpoint URL
@@ -412,7 +412,7 @@ No `services` array found in metadata.
 **Fix**: Add a services array with at least one entry:
 ```json
 "services": [
-  { "name": "MCP", "endpoint": "https://your-agent.com/mcp", "version": "2025-06-18" }
+  { "name": "MCP", "endpoint": "https://your-agent.com/mcp", "version": "2025-11-25" }
 ]
 ```
 
@@ -493,7 +493,7 @@ An MCP service entry has no `version` field.
 
 **Fix**: Add a version using the date format `YYYY-MM-DD`:
 ```json
-{ "name": "MCP", "endpoint": "https://your-agent.com/mcp", "version": "2025-06-18" }
+{ "name": "MCP", "endpoint": "https://your-agent.com/mcp", "version": "2025-11-25" }
 ```
 
 ### IA021: MCP version not date format
@@ -503,7 +503,7 @@ An MCP service entry has no `version` field.
 
 The MCP version string does not follow the expected `YYYY-MM-DD` format.
 
-**Fix**: Use a date string, for example `"2025-06-18"`.
+**Fix**: Use a date string, for example `"2025-11-25"`.
 
 ### IA022: A2A missing version
 
@@ -719,7 +719,7 @@ Run through this checklist before registering or updating your agent:
 - [ ] `services` is a JSON array
 - [ ] Every service object has a `name` and `endpoint` field
 - [ ] Every `endpoint` URL is non-empty and publicly reachable (returns HTTP 200)
-- [ ] MCP services include `version` in `YYYY-MM-DD` format (e.g., `"2025-06-18"`)
+- [ ] MCP services include `version` in `YYYY-MM-DD` format (e.g., `"2025-11-25"`)
 - [ ] A2A services include `version` in semver format (e.g., `"0.3.0"`)
 - [ ] A2A agent card is served at `/.well-known/agent.json`
 - [ ] OASF services include `version` if applicable

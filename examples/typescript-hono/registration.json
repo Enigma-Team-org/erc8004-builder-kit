@@ -10,7 +10,7 @@
     },
     {
       "name": "A2A",
-      "endpoint": "https://YOUR-DOMAIN/a2a",
+      "endpoint": "https://YOUR-DOMAIN/.well-known/agent-card.json",
       "version": "0.3.0"
     },
     {
@@ -21,6 +21,22 @@
         "get_agent_info",
         "ping"
       ]
+    },
+    {
+      "name": "OASF",
+      "endpoint": "https://YOUR-DOMAIN/oasf",
+      "version": "v0.8.0",
+      "skills": [
+        "tool_interaction/api_schema_understanding",
+        "tool_interaction/workflow_automation"
+      ],
+      "domains": [
+        "technology/software_engineering"
+      ]
+    },
+    {
+      "name": "heartbeat",
+      "endpoint": "https://YOUR-DOMAIN/heartbeat"
     }
   ],
   "x402Support": false,

@@ -30,15 +30,15 @@ app.get("/oasf", (c) => {
     framework: "oasf",
     frameworkVersion: "0.8",
     skills: [
-      "natural_language_processing/information_retrieval_synthesis/search",
-      "natural_language_processing/conversation/chatbot",
+      "natural_language_processing/information_retrieval_synthesis",
+      "natural_language_processing/natural_language_understanding",
       "tool_interaction/api_schema_understanding",
-      "tool_interaction/automation/workflow_automation",
+      "tool_interaction/workflow_automation",
     ],
     domains: [
       "technology/blockchain",
-      "finance/defi/analytics",
-      "technology/software_engineering/apis_integration",
+      "finance_and_business/finance",
+      "technology/software_engineering",
     ],
     mcpTools: registration.services
       ?.find((s: { name: string }) => s.name === "MCP")
@@ -61,7 +61,7 @@ async def oasf():
         "framework": "oasf",
         "frameworkVersion": "0.8",
         "skills": [
-            "natural_language_processing/information_retrieval_synthesis/search",
+            "natural_language_processing/information_retrieval_synthesis",
             "tool_interaction/api_schema_understanding",
         ],
         "domains": [
@@ -132,12 +132,12 @@ finance/
       "endpoint": "https://your-agent.com/oasf",
       "version": "0.8",
       "skills": [
-        "natural_language_processing/information_retrieval_synthesis/search",
-        "tool_interaction/automation/workflow_automation"
+        "natural_language_processing/information_retrieval_synthesis",
+        "tool_interaction/workflow_automation"
       ],
       "domains": [
         "technology/blockchain",
-        "finance/defi/analytics"
+        "finance_and_business/finance"
       ]
     }
   ]

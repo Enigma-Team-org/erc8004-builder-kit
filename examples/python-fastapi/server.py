@@ -109,7 +109,7 @@ async def oasf():
         "description": REGISTRATION.get("description", ""),
         "version": VERSION,
         "skills": [
-            "natural_language_processing/information_retrieval_synthesis/search",
+            "natural_language_processing/information_retrieval_synthesis",
             "tool_interaction/api_schema_understanding",
         ],
         "domains": [

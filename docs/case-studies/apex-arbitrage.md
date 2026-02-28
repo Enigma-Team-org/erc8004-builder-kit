@@ -113,7 +113,7 @@ CHAIN=avalanche PRIVATE_KEY=$KEY \
   "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
   "agentWallet": "eip155:43114:0xcd595a299ad1d5D088B7764e9330f7B0be7ca983",
   "services": [
-    { "type": "MCP", "version": "2025-06-18" },
+    { "type": "MCP", "version": "2025-11-25" },
     { "type": "A2A", "version": "0.3.0" },
     { "type": "web" }
   ],
@@ -130,7 +130,7 @@ CHAIN=avalanche PRIVATE_KEY=$KEY \
 
 - **web**: Dashboard
 - **A2A v0.3.0**: Natural language DeFi queries via 4 specialized skills
-- **MCP v2025-06-18**: 18 tools for arbitrage detection, simulation, and alerts
+- **MCP v2025-11-25**: 18 tools for arbitrage detection, simulation, and alerts
 - **x402**: Paid premium endpoints ($0.05 USDC)
 
 ### MCP Tools (18 Total)

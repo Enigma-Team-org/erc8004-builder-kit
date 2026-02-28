@@ -69,8 +69,9 @@ Your agent can expose multiple service types:
   "services": [
     { "name": "web", "endpoint": "https://your-domain.com/" },
     { "name": "MCP", "endpoint": "https://your-domain.com/mcp", "version": "2025-11-25" },
-    { "name": "A2A", "endpoint": "https://your-domain.com/a2a", "version": "0.2" },
-    { "name": "OASF", "endpoint": "https://your-domain.com/oasf" }
+    { "name": "A2A", "endpoint": "https://your-domain.com/.well-known/agent-card.json", "version": "0.3.0" },
+    { "name": "OASF", "endpoint": "https://your-domain.com/oasf", "version": "v0.8.0" },
+    { "name": "heartbeat", "endpoint": "https://your-domain.com/heartbeat" }
   ]
 }
 ```
